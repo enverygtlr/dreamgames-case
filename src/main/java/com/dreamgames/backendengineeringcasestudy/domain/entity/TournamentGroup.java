@@ -19,10 +19,9 @@ import java.util.UUID;
 public class TournamentGroup {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue
     @JdbcTypeCode(SqlTypes.CHAR)
-    @Column(length = 16, columnDefinition = "varchar(16)", updatable = false, nullable = false)
+    @Column(length = 36, columnDefinition = "varchar(36)", updatable = false, nullable = false)
     private UUID id;
 
     @NotNull
