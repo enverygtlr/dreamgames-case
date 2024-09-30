@@ -13,7 +13,7 @@ import org.hibernate.type.SqlTypes;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Participant")
+@Table(name = "participant")
 public class Participant {
 
     @Id

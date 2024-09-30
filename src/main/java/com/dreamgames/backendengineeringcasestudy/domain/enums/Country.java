@@ -1,5 +1,7 @@
 package com.dreamgames.backendengineeringcasestudy.domain.enums;
 
+import java.util.Random;
+
 public enum Country {
     UK("United Kingdom"),
     TR("Türkiye"),
@@ -7,9 +9,16 @@ public enum Country {
     FR("France"),
     DE("Germany");
 
-    public final String name;
+    public final String fullName;
 
-    Country(String name) {
-        this.name = name;
+    Country(String fullName) {
+        this.fullName = fullName;
+    }
+
+    private static final Random PRNG = new Random();
+
+    public static Country getRandomCountry() {
+        Country[] countries = values();
+        return countries[PRNG.nextInt(countries.length)];
     }
 }

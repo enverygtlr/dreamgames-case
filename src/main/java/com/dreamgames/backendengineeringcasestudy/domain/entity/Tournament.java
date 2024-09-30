@@ -16,7 +16,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Tournament")
+@Table(name = "tournament")
 public class Tournament {
 
     @Id

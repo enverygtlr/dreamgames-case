@@ -3,12 +3,18 @@ package com.dreamgames.backendengineeringcasestudy.bootstrap;
 import com.dreamgames.backendengineeringcasestudy.domain.entity.*;
 import com.dreamgames.backendengineeringcasestudy.domain.enums.Country;
 import com.dreamgames.backendengineeringcasestudy.repository.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.servlet.http.Part;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.SessionFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.UUID;
+
 
 @Component
 @RequiredArgsConstructor
@@ -18,9 +24,15 @@ public class BootstrapData implements CommandLineRunner {
     private final TournamentGroupRepository tournamentGroupRepository;
     private final ParticipantRepository participantRepository;
     private final CountryScoreRepository countryScoreRepository;
+    private final EntityManagerFactory entityManagerFactory;
 
     public void run(String... args) throws Exception {
-        loadData();
+        userRepository.deleteAll();
+        tournamentRepository.deleteAll();
+        participantRepository.deleteAll();
+        countryScoreRepository.deleteAll();
+        tournamentGroupRepository.deleteAll();
+//        loadData();
     }
 
     private void loadData() {
@@ -94,7 +106,7 @@ public class BootstrapData implements CommandLineRunner {
 
         TournamentGroup group1 = TournamentGroup.builder()
                 .tournament(tournament1)
-                .ready(false)
+                .ready(true)
                 .build();
 
         TournamentGroup group2 = TournamentGroup.builder()
@@ -154,11 +166,21 @@ public class BootstrapData implements CommandLineRunner {
 
         Participant participant6 = Participant.builder()
                 .user(user6)
+                .country(user6.getCountry())
                 .group(group2)
                 .tournament(tournament3)
                 .score(0)
                 .rewardClaimed(false)
-                .country(user6.getCountry())
+                .build();
+
+
+        Participant participant7 = Participant.builder()
+                .user(user7)
+                .group(group3)
+                .tournament(tournament3)
+                .score(0)
+                .rewardClaimed(false)
+                .country(user7.getCountry())
                 .build();
 
         CountryScore score1 = CountryScore.builder()
@@ -220,6 +242,7 @@ public class BootstrapData implements CommandLineRunner {
             participantRepository.save(participant4);
             participantRepository.save(participant5);
             participantRepository.save(participant6);
+            participantRepository.save(participant7);
         }
 
         if (countryScoreRepository.count() == 0) {
