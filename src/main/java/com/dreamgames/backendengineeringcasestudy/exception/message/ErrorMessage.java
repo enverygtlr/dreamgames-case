@@ -5,7 +5,8 @@ import lombok.Getter;
 
 @Getter
 public enum ErrorMessage implements BaseErrorMessage {
-    DUPLICATE_USER("User with given username already exists.", "Existing Username");
+    DUPLICATE_USER("User with given username already exists.", "Existing Username"),
+    INVALID_USER("User with given id does not exist.", "Invalid User");
 
     private final String message;
     private final String title;
