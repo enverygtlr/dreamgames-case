@@ -24,7 +24,6 @@ public class BootstrapData implements CommandLineRunner {
     private final TournamentGroupRepository tournamentGroupRepository;
     private final ParticipantRepository participantRepository;
     private final CountryScoreRepository countryScoreRepository;
-    private final EntityManagerFactory entityManagerFactory;
 
     public void run(String... args) throws Exception {
         userRepository.deleteAll();
