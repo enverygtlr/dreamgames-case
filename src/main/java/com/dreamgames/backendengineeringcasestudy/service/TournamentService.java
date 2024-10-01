@@ -1,14 +1,16 @@
 package com.dreamgames.backendengineeringcasestudy.service;
 
-
 import com.dreamgames.backendengineeringcasestudy.domain.entity.Participant;
 import com.dreamgames.backendengineeringcasestudy.domain.entity.Tournament;
 import com.dreamgames.backendengineeringcasestudy.domain.entity.TournamentGroup;
 import com.dreamgames.backendengineeringcasestudy.domain.entity.User;
+import com.dreamgames.backendengineeringcasestudy.domain.enums.Country;
 import com.dreamgames.backendengineeringcasestudy.domain.request.ClaimRewardRequest;
+import com.dreamgames.backendengineeringcasestudy.domain.request.CountryLeaderboardRequest;
 import com.dreamgames.backendengineeringcasestudy.domain.request.EnterTournamentRequest;
 import com.dreamgames.backendengineeringcasestudy.domain.request.GroupLeaderboardRequest;
 import com.dreamgames.backendengineeringcasestudy.domain.response.ClaimRewardResponse;
+import com.dreamgames.backendengineeringcasestudy.domain.response.CountryLeaderboardResponse;
 import com.dreamgames.backendengineeringcasestudy.domain.response.EnterTournamentResponse;
 import com.dreamgames.backendengineeringcasestudy.domain.response.GroupLeaderboardResponse;
 import com.dreamgames.backendengineeringcasestudy.event.UserUpdateLevelEvent;
@@ -28,12 +30,11 @@ import java.util.Optional;
 public class TournamentService implements ApplicationListener<UserUpdateLevelEvent> {
     private final TournamentRepository tournamentRepository;
     private final ParticipantRepository participantRepository;
-    private final CountryScoreRepository countryScoreRepository;
     private final UserService userService;
     private final UserMapper userMapper;
-    private final TournamentGroupRepository tournamentGroupRepository;
     private final TournamentGroupService tournamentGroupService;
     private final UserRepository userRepository;
+    private final CountryScoreService countryScoreService;
 
 
     @Transactional
@@ -66,8 +67,20 @@ public class TournamentService implements ApplicationListener<UserUpdateLevelEve
                 .rank(rank)
                 .tournamentId(tournament.getId().toString())
                 .startTime(tournament.getStartTime())
-                .endTime(tournament.getEnd_time())
+                .endTime(tournament.getEndTime())
                 .groupRanks(groupRanks)
+                .build();
+    }
+
+    public CountryLeaderboardResponse getCountryLeaderboard(CountryLeaderboardRequest request) {
+        Tournament tournament = tournamentRepository.findById(request.tournamentId()).orElseThrow(TournamentNotFoundException::new);
+        var countryScoreRanks = countryScoreService.getCountryScoreLeaderboard(tournament);
+
+        return CountryLeaderboardResponse.builder()
+                .tournamentId(tournament.getId().toString())
+                .startTime(tournament.getStartTime())
+                .endTime(tournament.getEndTime())
+                .countryScoreRanks(countryScoreRanks)
                 .build();
     }
 
@@ -123,6 +136,10 @@ public class TournamentService implements ApplicationListener<UserUpdateLevelEve
         }
     }
 
+    private void updateCountryScore(Tournament tournament, Country country) {
+        countryScoreService.addCountryScore(tournament,country,1);
+    }
+
     private void updateParticipantScore(User user) {
         tournamentRepository.findFirstByIsActiveTrue()
                 .flatMap(activeTournament -> participantRepository.findByUserAndTournament(user, activeTournament))
@@ -130,9 +147,11 @@ public class TournamentService implements ApplicationListener<UserUpdateLevelEve
                 .ifPresent(participant -> {
                     participant.setScore(participant.getScore() + 1);
                     participantRepository.save(participant);
+                    updateCountryScore(participant.getTournament(), participant.getCountry());
                 });
     }
 
+    @Transactional
     @Override
     public void onApplicationEvent(UserUpdateLevelEvent event) {
         updateParticipantScore(event.getUser());

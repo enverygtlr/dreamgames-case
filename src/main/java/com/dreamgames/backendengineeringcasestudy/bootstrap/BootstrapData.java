@@ -95,19 +95,19 @@ public class BootstrapData implements CommandLineRunner {
 
         Tournament tournament1 = Tournament.builder()
                 .startTime(LocalDateTime.of(2024, Month.SEPTEMBER, 29, 0, 0))
-                .end_time(LocalDateTime.of(2024, Month.SEPTEMBER, 29, 20, 0))
+                .endTime(LocalDateTime.of(2024, Month.SEPTEMBER, 29, 20, 0))
                 .isActive(true)
                 .build();
 
         Tournament tournament2 = Tournament.builder()
                 .startTime(LocalDateTime.of(2024, Month.SEPTEMBER, 28, 0, 0))
-                .end_time(LocalDateTime.of(2024, Month.SEPTEMBER, 28, 20, 0))
+                .endTime(LocalDateTime.of(2024, Month.SEPTEMBER, 28, 20, 0))
                 .isActive(false)
                 .build();
 
         Tournament tournament3 = Tournament.builder()
                 .startTime(LocalDateTime.of(2024, Month.SEPTEMBER, 27, 0, 0))
-                .end_time(LocalDateTime.of(2024, Month.SEPTEMBER, 27, 20, 0))
+                .endTime(LocalDateTime.of(2024, Month.SEPTEMBER, 27, 20, 0))
                 .isActive(false)
                 .build();
 
@@ -131,7 +131,7 @@ public class BootstrapData implements CommandLineRunner {
                 .country(user1.getCountry())
                 .group(group1)
                 .tournament(tournament1)
-                .score(5)
+                .score(0)
                 .rewardClaimed(false)
                 .build();
 
@@ -140,7 +140,7 @@ public class BootstrapData implements CommandLineRunner {
                 .country(user2.getCountry())
                 .group(group1)
                 .tournament(tournament1)
-                .score(3)
+                .score(0)
                 .rewardClaimed(false)
                 .build();
 
@@ -149,7 +149,7 @@ public class BootstrapData implements CommandLineRunner {
                 .country(user3.getCountry())
                 .group(group1)
                 .tournament(tournament1)
-                .score(3)
+                .score(0)
                 .rewardClaimed(false)
                 .build();
 
@@ -193,31 +193,31 @@ public class BootstrapData implements CommandLineRunner {
         CountryScore score1 = CountryScore.builder()
                 .country(Country.TR)
                 .tournament(tournament1)
-                .totalScore(350)
+                .totalScore(0)
                 .build();
 
         CountryScore score2 = CountryScore.builder()
                 .country(Country.FR)
                 .tournament(tournament1)
-                .totalScore(250)
+                .totalScore(0)
                 .build();
 
         CountryScore score3 = CountryScore.builder()
                 .country(Country.DE)
                 .tournament(tournament1)
-                .totalScore(310)
+                .totalScore(0)
                 .build();
 
         CountryScore score4 = CountryScore.builder()
                 .country(Country.UK)
                 .tournament(tournament1)
-                .totalScore(370)
+                .totalScore(0)
                 .build();
 
         CountryScore score5 = CountryScore.builder()
                 .country(Country.US)
                 .tournament(tournament1)
-                .totalScore(120)
+                .totalScore(0)
                 .build();
 
         if (userRepository.count() == 0) {

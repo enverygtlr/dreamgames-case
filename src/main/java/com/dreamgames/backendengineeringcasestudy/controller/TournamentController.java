@@ -1,16 +1,16 @@
 package com.dreamgames.backendengineeringcasestudy.controller;
 
-import com.dreamgames.backendengineeringcasestudy.domain.request.ClaimRewardRequest;
-import com.dreamgames.backendengineeringcasestudy.domain.request.EnterTournamentRequest;
-import com.dreamgames.backendengineeringcasestudy.domain.request.GroupLeaderboardRequest;
-import com.dreamgames.backendengineeringcasestudy.domain.request.UserSaveRequest;
+import com.dreamgames.backendengineeringcasestudy.domain.request.*;
 import com.dreamgames.backendengineeringcasestudy.domain.response.ClaimRewardResponse;
+import com.dreamgames.backendengineeringcasestudy.domain.response.CountryLeaderboardResponse;
 import com.dreamgames.backendengineeringcasestudy.domain.response.EnterTournamentResponse;
 import com.dreamgames.backendengineeringcasestudy.domain.response.GroupLeaderboardResponse;
 import com.dreamgames.backendengineeringcasestudy.service.TournamentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ResourceBundle;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,5 +33,9 @@ public class TournamentController {
         return ResponseEntity.ok(tournamentService.getGroupLeaderboard(request));
     }
 
+    @GetMapping("/country-leaderboard")
+    public ResponseEntity<CountryLeaderboardResponse> getCountryLeaderboard(@RequestBody CountryLeaderboardRequest request) {
+       return ResponseEntity.ok(tournamentService.getCountryLeaderboard(request));
+    }
 
 }
