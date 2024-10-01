@@ -31,7 +31,8 @@ public class BootstrapData implements CommandLineRunner {
         participantRepository.deleteAll();
         countryScoreRepository.deleteAll();
         tournamentGroupRepository.deleteAll();
-//        loadData();
+
+        loadData();
     }
 
     private void loadData() {
@@ -228,29 +229,29 @@ public class BootstrapData implements CommandLineRunner {
             tournamentRepository.save(tournament3);
         }
 
-        if (tournamentGroupRepository.count() == 0) {
-            tournamentGroupRepository.save(group1);
-            tournamentGroupRepository.save(group2);
-            tournamentGroupRepository.save(group3);
-        }
-
-        if (participantRepository.count() == 0) {
-            participantRepository.save(participant1);
-            participantRepository.save(participant2);
-            participantRepository.save(participant3);
-            participantRepository.save(participant4);
-            participantRepository.save(participant5);
-            participantRepository.save(participant6);
-            participantRepository.save(participant7);
-        }
-
-        if (countryScoreRepository.count() == 0) {
-            countryScoreRepository.save(score1);
-            countryScoreRepository.save(score2);
-            countryScoreRepository.save(score3);
-            countryScoreRepository.save(score4);
-            countryScoreRepository.save(score5);
-        }
+//        if (tournamentGroupRepository.count() == 0) {
+//            tournamentGroupRepository.save(group1);
+//            tournamentGroupRepository.save(group2);
+//            tournamentGroupRepository.save(group3);
+//        }
+//
+//        if (participantRepository.count() == 0) {
+//            participantRepository.save(participant1);
+//            participantRepository.save(participant2);
+//            participantRepository.save(participant3);
+//            participantRepository.save(participant4);
+//            participantRepository.save(participant5);
+//            participantRepository.save(participant6);
+//            participantRepository.save(participant7);
+//        }
+//
+//        if (countryScoreRepository.count() == 0) {
+//            countryScoreRepository.save(score1);
+//            countryScoreRepository.save(score2);
+//            countryScoreRepository.save(score3);
+//            countryScoreRepository.save(score4);
+//            countryScoreRepository.save(score5);
+//        }
     }
 
 }

@@ -17,5 +17,10 @@ public interface TournamentGroupRepository extends JpaRepository<TournamentGroup
             left join Participant p on tg.id = p.group.id and p.country = :country
             where p.id is NULL and tg.ready = false and tg.tournament = :tournament
             """)
-    public List<TournamentGroup> findAvailableGroup(Country country, Tournament tournament);
+    public List<TournamentGroup> findAvailableGroups(Country country, Tournament tournament);
+
+    default Optional<TournamentGroup> findAvailableGroup(Country country, Tournament tournament) {
+        return findAvailableGroups(country, tournament).stream().findFirst();
+    }
+
 }

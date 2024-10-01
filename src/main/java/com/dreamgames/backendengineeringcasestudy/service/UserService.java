@@ -22,7 +22,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    private final Integer INITIAL_LEVEL = 1;
+    private final Integer INITIAL_LEVEL = 30;
     private final Integer INITIAL_COIN = 5000;
 
     @Transactional
@@ -39,6 +39,10 @@ public class UserService {
         user.setCoin(user.getCoin() + 25);
         User updatedUser = userRepository.save(user);
         return userMapper.convertToUserUpdateLevelResponse(updatedUser);
+    }
+
+    public User getUserById(UUID id) {
+        return userRepository.findById(id).orElseThrow(UserNotExistException::new);
     }
 
     private User generateInitialUser(UserSaveRequest request) {
