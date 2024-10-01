@@ -37,6 +37,7 @@ public class BootstrapData implements CommandLineRunner {
 
     private void loadData() {
         User user1 = User.builder()
+                .id(UUID.fromString("7350ac33-2517-462f-9355-894fb9b3185e"))
                 .username("player1")
                 .coin(5000)
                 .country(Country.TR)
@@ -44,6 +45,7 @@ public class BootstrapData implements CommandLineRunner {
                 .build();
 
         User user2 = User.builder()
+                .id(UUID.fromString("92e4fd2a-66ba-4f5f-a0e7-71ee80acfb86"))
                 .username("player2")
                 .coin(5000)
                 .country(Country.FR)
@@ -51,6 +53,7 @@ public class BootstrapData implements CommandLineRunner {
                 .build();
 
         User user3 = User.builder()
+                .id(UUID.fromString("3b90f660-639d-49c2-9cda-1e0470a7670b"))
                 .username("player3")
                 .coin(5000)
                 .country(Country.DE)
@@ -59,6 +62,7 @@ public class BootstrapData implements CommandLineRunner {
 
 
         User user4 = User.builder()
+                .id(UUID.fromString("43bdc3dd-589d-48c0-830a-73429bb23077"))
                 .username("player4")
                 .coin(5000)
                 .country(Country.UK)
@@ -66,6 +70,7 @@ public class BootstrapData implements CommandLineRunner {
                 .build();
 
         User user5 = User.builder()
+                .id(UUID.fromString("d2f5daa2-f083-4ae3-b1e3-6df4215b68a7"))
                 .username("player5")
                 .coin(5000)
                 .country(Country.US)
@@ -73,17 +78,19 @@ public class BootstrapData implements CommandLineRunner {
                 .build();
 
         User user6 = User.builder()
+                .id(UUID.fromString("5fa54988-466d-41ac-bbf0-2bc0dac201e1"))
                 .username("player6")
                 .coin(5000)
                 .country(Country.TR)
-                .level(1)
+                .level(20)
                 .build();
 
         User user7 = User.builder()
+                .id(UUID.fromString("d90c777f-e2e8-40d7-b70d-af213871fc47"))
                 .username("player7")
                 .coin(5000)
                 .country(Country.FR)
-                .level(1)
+                .level(20)
                 .build();
 
         Tournament tournament1 = Tournament.builder()
@@ -123,8 +130,8 @@ public class BootstrapData implements CommandLineRunner {
                 .user(user1)
                 .country(user1.getCountry())
                 .group(group1)
-                .tournament(tournament3)
-                .score(0)
+                .tournament(tournament1)
+                .score(5)
                 .rewardClaimed(false)
                 .build();
 
@@ -132,8 +139,8 @@ public class BootstrapData implements CommandLineRunner {
                 .user(user2)
                 .country(user2.getCountry())
                 .group(group1)
-                .tournament(tournament3)
-                .score(0)
+                .tournament(tournament1)
+                .score(3)
                 .rewardClaimed(false)
                 .build();
 
@@ -141,8 +148,8 @@ public class BootstrapData implements CommandLineRunner {
                 .user(user3)
                 .country(user3.getCountry())
                 .group(group1)
-                .tournament(tournament3)
-                .score(0)
+                .tournament(tournament1)
+                .score(3)
                 .rewardClaimed(false)
                 .build();
 
@@ -150,7 +157,7 @@ public class BootstrapData implements CommandLineRunner {
                 .user(user4)
                 .country(user4.getCountry())
                 .group(group1)
-                .tournament(tournament3)
+                .tournament(tournament1)
                 .score(0)
                 .rewardClaimed(false)
                 .build();
@@ -159,7 +166,7 @@ public class BootstrapData implements CommandLineRunner {
                 .user(user5)
                 .country(user5.getCountry())
                 .group(group1)
-                .tournament(tournament3)
+                .tournament(tournament1)
                 .score(0)
                 .rewardClaimed(false)
                 .build();
@@ -168,7 +175,7 @@ public class BootstrapData implements CommandLineRunner {
                 .user(user6)
                 .country(user6.getCountry())
                 .group(group2)
-                .tournament(tournament3)
+                .tournament(tournament1)
                 .score(0)
                 .rewardClaimed(false)
                 .build();
@@ -177,7 +184,7 @@ public class BootstrapData implements CommandLineRunner {
         Participant participant7 = Participant.builder()
                 .user(user7)
                 .group(group3)
-                .tournament(tournament3)
+                .tournament(tournament1)
                 .score(0)
                 .rewardClaimed(false)
                 .country(user7.getCountry())
@@ -185,31 +192,31 @@ public class BootstrapData implements CommandLineRunner {
 
         CountryScore score1 = CountryScore.builder()
                 .country(Country.TR)
-                .tournament(tournament3)
+                .tournament(tournament1)
                 .totalScore(350)
                 .build();
 
         CountryScore score2 = CountryScore.builder()
                 .country(Country.FR)
-                .tournament(tournament3)
+                .tournament(tournament1)
                 .totalScore(250)
                 .build();
 
         CountryScore score3 = CountryScore.builder()
                 .country(Country.DE)
-                .tournament(tournament3)
+                .tournament(tournament1)
                 .totalScore(310)
                 .build();
 
         CountryScore score4 = CountryScore.builder()
                 .country(Country.UK)
-                .tournament(tournament3)
+                .tournament(tournament1)
                 .totalScore(370)
                 .build();
 
         CountryScore score5 = CountryScore.builder()
                 .country(Country.US)
-                .tournament(tournament3)
+                .tournament(tournament1)
                 .totalScore(120)
                 .build();
 
@@ -229,29 +236,29 @@ public class BootstrapData implements CommandLineRunner {
             tournamentRepository.save(tournament3);
         }
 
-//        if (tournamentGroupRepository.count() == 0) {
-//            tournamentGroupRepository.save(group1);
-//            tournamentGroupRepository.save(group2);
-//            tournamentGroupRepository.save(group3);
-//        }
-//
-//        if (participantRepository.count() == 0) {
-//            participantRepository.save(participant1);
-//            participantRepository.save(participant2);
-//            participantRepository.save(participant3);
-//            participantRepository.save(participant4);
-//            participantRepository.save(participant5);
-//            participantRepository.save(participant6);
-//            participantRepository.save(participant7);
-//        }
-//
-//        if (countryScoreRepository.count() == 0) {
-//            countryScoreRepository.save(score1);
-//            countryScoreRepository.save(score2);
-//            countryScoreRepository.save(score3);
-//            countryScoreRepository.save(score4);
-//            countryScoreRepository.save(score5);
-//        }
+        if (tournamentGroupRepository.count() == 0) {
+            tournamentGroupRepository.save(group1);
+            tournamentGroupRepository.save(group2);
+            tournamentGroupRepository.save(group3);
+        }
+
+        if (participantRepository.count() == 0) {
+            participantRepository.save(participant1);
+            participantRepository.save(participant2);
+            participantRepository.save(participant3);
+            participantRepository.save(participant4);
+            participantRepository.save(participant5);
+            participantRepository.save(participant6);
+            participantRepository.save(participant7);
+        }
+
+        if (countryScoreRepository.count() == 0) {
+            countryScoreRepository.save(score1);
+            countryScoreRepository.save(score2);
+            countryScoreRepository.save(score3);
+            countryScoreRepository.save(score4);
+            countryScoreRepository.save(score5);
+        }
     }
 
 }

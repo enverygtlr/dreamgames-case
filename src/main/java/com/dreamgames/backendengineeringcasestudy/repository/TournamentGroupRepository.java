@@ -2,6 +2,7 @@ package com.dreamgames.backendengineeringcasestudy.repository;
 
 import com.dreamgames.backendengineeringcasestudy.domain.entity.Tournament;
 import com.dreamgames.backendengineeringcasestudy.domain.entity.TournamentGroup;
+import com.dreamgames.backendengineeringcasestudy.domain.entity.User;
 import com.dreamgames.backendengineeringcasestudy.domain.enums.Country;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
