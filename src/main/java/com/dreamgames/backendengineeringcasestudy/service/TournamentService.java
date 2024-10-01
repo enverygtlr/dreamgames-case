@@ -8,6 +8,7 @@ import com.dreamgames.backendengineeringcasestudy.domain.entity.TournamentGroup;
 import com.dreamgames.backendengineeringcasestudy.domain.entity.User;
 import com.dreamgames.backendengineeringcasestudy.domain.request.EnterTournamentRequest;
 import com.dreamgames.backendengineeringcasestudy.domain.response.EnterTournamentResponse;
+import com.dreamgames.backendengineeringcasestudy.event.UserUpdateLevelEvent;
 import com.dreamgames.backendengineeringcasestudy.exception.MissingRequirementException;
 import com.dreamgames.backendengineeringcasestudy.exception.TournamentNotFoundException;
 import com.dreamgames.backendengineeringcasestudy.exception.UserAlreadyInTournamentException;
@@ -18,6 +19,7 @@ import com.dreamgames.backendengineeringcasestudy.repository.ParticipantReposito
 import com.dreamgames.backendengineeringcasestudy.repository.TournamentGroupRepository;
 import com.dreamgames.backendengineeringcasestudy.repository.TournamentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +33,7 @@ import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
-public class TournamentService {
+public class TournamentService implements ApplicationListener<UserUpdateLevelEvent> {
     private final TournamentRepository tournamentRepository;
     private final ParticipantRepository participantRepository;
     private final CountryScoreRepository countryScoreRepository;
@@ -78,5 +80,20 @@ public class TournamentService {
         if (participantRepository.existsByUserAndRewardClaimedFalse(user)) {
            throw new UserHasUnclaimedRewardException();
         }
+    }
+
+    private void updateParticipantScore(User user) {
+        tournamentRepository.findFirstByIsActiveTrue()
+                .flatMap(activeTournament -> participantRepository.findByUserAndTournament(user, activeTournament))
+                .filter(participant -> participant.getGroup().getReady())
+                .ifPresent(participant -> {
+                    participant.setScore(participant.getScore() + 1);
+                    participantRepository.save(participant);
+                });
+    }
+
+    @Override
+    public void onApplicationEvent(UserUpdateLevelEvent event) {
+        updateParticipantScore(event.getUser());
     }
 }

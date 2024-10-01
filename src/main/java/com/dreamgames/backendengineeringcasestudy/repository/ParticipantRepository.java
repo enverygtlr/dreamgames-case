@@ -15,6 +15,5 @@ public interface ParticipantRepository extends JpaRepository<Participant, Intege
     public boolean existsByUserAndRewardClaimedFalse(User user);
 
     public List<Participant> findByGroup(TournamentGroup group);
-
 }
 

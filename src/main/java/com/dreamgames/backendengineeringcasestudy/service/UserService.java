@@ -6,11 +6,13 @@ import com.dreamgames.backendengineeringcasestudy.domain.request.UserSaveRequest
 import com.dreamgames.backendengineeringcasestudy.domain.request.UserUpdateLevelRequest;
 import com.dreamgames.backendengineeringcasestudy.domain.response.UserResponse;
 import com.dreamgames.backendengineeringcasestudy.domain.response.UserUpdateLevelResponse;
+import com.dreamgames.backendengineeringcasestudy.event.UserUpdateLevelEvent;
 import com.dreamgames.backendengineeringcasestudy.exception.UserDuplicateException;
 import com.dreamgames.backendengineeringcasestudy.exception.UserNotExistException;
 import com.dreamgames.backendengineeringcasestudy.mapper.UserMapper;
 import com.dreamgames.backendengineeringcasestudy.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,8 @@ import java.util.UUID;
 public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     private final Integer INITIAL_LEVEL = 30;
     private final Integer INITIAL_COIN = 5000;
@@ -38,6 +42,7 @@ public class UserService {
         user.setLevel(user.getLevel() + 1);
         user.setCoin(user.getCoin() + 25);
         User updatedUser = userRepository.save(user);
+        applicationEventPublisher.publishEvent(new UserUpdateLevelEvent(this, updatedUser));
         return userMapper.convertToUserUpdateLevelResponse(updatedUser);
     }
 
