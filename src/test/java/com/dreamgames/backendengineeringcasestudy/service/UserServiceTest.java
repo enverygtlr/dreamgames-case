@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -31,6 +32,9 @@ class UserServiceTest {
     @Mock
     private UserMapper userMapper;
 
+    @Mock
+    private ApplicationEventPublisher applicationEventPublisher;
+
     @InjectMocks
     private UserService userService;
 
@@ -39,7 +43,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testSaveUserAlreadyExists() {
+    void save_shouldSuccess() {
         UserSaveRequest request = new UserSaveRequest("duplicateUser");
 
         when(userRepository.existsByUsername("duplicateUser")).thenReturn(true);
@@ -50,9 +54,9 @@ class UserServiceTest {
     }
 
     @Test
-    void testUpdateSuccess() {
+    void update_shouldSuccess() {
         // Given
-        UserUpdateLevelRequest request = new UserUpdateLevelRequest(UUID.randomUUID()); // Assuming request contains user ID
+        UserUpdateLevelRequest request = new UserUpdateLevelRequest(UUID.randomUUID());
         User user = User.builder()
                 .id(request.id())
                 .country(Country.TR)
@@ -71,7 +75,6 @@ class UserServiceTest {
 
         UserUpdateLevelResponse response = new UserUpdateLevelResponse(updatedUser.getId().toString(),"testUser", updatedUser.getCountry().name(), updatedUser.getLevel(), updatedUser.getCoin());
 
-
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         when(userRepository.save(user)).thenReturn(updatedUser);
         when(userMapper.convertToUserUpdateLevelResponse(updatedUser)).thenReturn(response);
@@ -83,6 +86,7 @@ class UserServiceTest {
         assertNotNull(result);
         assertEquals(6, result.level());
         assertEquals(125, result.coin());
+
         verify(userRepository, times(1)).findById(user.getId());
         verify(userRepository, times(1)).save(user);
         verify(userMapper, times(1)).convertToUserUpdateLevelResponse(updatedUser);

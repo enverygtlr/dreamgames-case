@@ -9,17 +9,14 @@ import com.dreamgames.backendengineeringcasestudy.domain.entity.User;
 import com.dreamgames.backendengineeringcasestudy.mapper.ParticipantMapper;
 import com.dreamgames.backendengineeringcasestudy.repository.ParticipantRepository;
 import com.dreamgames.backendengineeringcasestudy.repository.TournamentGroupRepository;
-import com.dreamgames.backendengineeringcasestudy.repository.TournamentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +24,6 @@ public class TournamentGroupService {
     private final TournamentGroupRepository tournamentGroupRepository;
     private final ParticipantRepository participantRepository;
     private final ParticipantMapper participantMapper;
-    private final TournamentRepository tournamentRepository;
 
     @Transactional
     public TournamentGroup assignUserToTournamentGroup(Tournament tournament, User user) {
@@ -43,7 +39,7 @@ public class TournamentGroupService {
 
 
     @Transactional
-    public List<GroupRankDTO> getGroupRankDTOs(TournamentGroup group) {
+    public List<GroupRankDTO> getRankings(TournamentGroup group) {
         var participantRanks = getParticipantRanks(group);
         return convertToGroupRankDTOs(participantRanks);
     }
@@ -101,11 +97,9 @@ public class TournamentGroupService {
     }
 
     private List<GroupRankDTO> convertToGroupRankDTOs(List<ParticipantRank> participantRanks) {
-            return IntStream.range(0, participantRanks.size())
-            .mapToObj(index -> {
-                ParticipantRank participantRank = participantRanks.get(index);
-                return participantMapper.toGroupRankDTO(participantRank.participant(), participantRank.rank());
-            })
+            return participantRanks.stream().map(rank -> {
+                        return participantMapper.toGroupRankDTO(rank.participant(), rank.rank());
+                    })
             .collect(Collectors.toList());
     }
 

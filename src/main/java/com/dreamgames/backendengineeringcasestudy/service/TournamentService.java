@@ -1,5 +1,6 @@
 package com.dreamgames.backendengineeringcasestudy.service;
 
+import com.dreamgames.backendengineeringcasestudy.domain.dto.GroupRankDTO;
 import com.dreamgames.backendengineeringcasestudy.domain.entity.Participant;
 import com.dreamgames.backendengineeringcasestudy.domain.entity.Tournament;
 import com.dreamgames.backendengineeringcasestudy.domain.entity.TournamentGroup;
@@ -19,11 +20,13 @@ import com.dreamgames.backendengineeringcasestudy.mapper.UserMapper;
 import com.dreamgames.backendengineeringcasestudy.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationListener;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.time.LocalTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -45,13 +48,13 @@ public class TournamentService implements ApplicationListener<UserUpdateLevelEve
         validateUserRequirements(user);
 
         var tournamentGroup = tournamentGroupService.assignUserToTournamentGroup(activeTournament, user);
-        var groupRankDTOs = tournamentGroupService.getGroupRankDTOs(tournamentGroup);
+        List<GroupRankDTO> groupRankings = tournamentGroupService.getRankings(tournamentGroup);
 
         return  EnterTournamentResponse.builder()
                 .tournamentId(activeTournament.getId().toString())
-                .startTime(LocalDateTime.now())
-                .endTime(LocalDateTime.now())
-                .groupRanks(groupRankDTOs)
+                .startTime(activeTournament.getStartTime())
+                .endTime(activeTournament.getEndTime())
+                .groupRanks(groupRankings)
                 .build();
     }
 
@@ -59,7 +62,7 @@ public class TournamentService implements ApplicationListener<UserUpdateLevelEve
         User user = userService.getUserById(request.userId());
         Tournament tournament = tournamentRepository.findById(request.tournamentId()).orElseThrow(TournamentNotFoundException::new);
         TournamentGroup group = tournamentGroupService.getGroupOfUser(tournament, user).orElseThrow(TournamentNotFoundException::new);
-        var groupRanks = tournamentGroupService.getGroupRankDTOs(group);
+        var groupRanks = tournamentGroupService.getRankings(group);
         int rank = tournamentGroupService.getRankingOfUser(group, user);
 
         return GroupLeaderboardResponse.builder()
@@ -87,19 +90,13 @@ public class TournamentService implements ApplicationListener<UserUpdateLevelEve
     @Transactional
     public ClaimRewardResponse claimReward(ClaimRewardRequest request) {
         User user = userService.getUserById(request.userId());
+        Participant participant = participantRepository.findFirstByUserAndRewardClaimedFalseAndTournamentIsActiveFalse(user).orElseThrow(NoRewardAvailableException::new);
 
-        Optional<Participant> participantOpt = participantRepository.findFirstByUserAndRewardClaimedFalseAndTournamentIsActiveFalse(user);
-
-        if (participantOpt.isPresent()) {
-            Participant participant = participantOpt.get();
-            int rank = tournamentGroupService.getRankingOfUser(participant.getGroup(), user);
-            User updatedUser = processReward(user, rank);
-            participant.setRewardClaimed(true);
-            participantRepository.save(participant);
-            return userMapper.convertToClaimRewardResponse(updatedUser);
-        } else {
-            throw new NoRewardAvailableException();
-        }
+        int rank = tournamentGroupService.getRankingOfUser(participant.getGroup(), user);
+        User updatedUser = processReward(user, rank);
+        participant.setRewardClaimed(true);
+        participantRepository.save(participant);
+        return userMapper.convertToClaimRewardResponse(updatedUser);
     }
 
     private User processReward(User user, int rank) {
@@ -119,12 +116,28 @@ public class TournamentService implements ApplicationListener<UserUpdateLevelEve
         }
     }
 
-    private void startNewTournament() {
+    @Transactional
+    @Scheduled(cron = "0 0 0 * * *", zone = "UTC")
+    public void startTournament() {
+        LocalDateTime startTime = LocalDateTime.now().with(LocalTime.MIDNIGHT);
+        LocalDateTime endTime = startTime.withHour(20);
 
+        var tournament = Tournament.builder()
+                .startTime(startTime)
+                .endTime(endTime)
+                .isActive(true)
+                .build();
+
+        tournamentRepository.save(tournament);
     }
 
-    private void endCurrentTournament() {
-
+    @Transactional
+    @Scheduled(cron = "0 0 20 * * *", zone = "UTC")
+    public void endTournament() {
+        tournamentRepository.findFirstByIsActiveTrue().ifPresent(tournament -> {
+            tournament.setIsActive(false);
+            tournamentRepository.save(tournament);
+        });
     }
 
 
