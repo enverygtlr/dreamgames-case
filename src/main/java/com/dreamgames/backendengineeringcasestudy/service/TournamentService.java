@@ -90,7 +90,8 @@ public class TournamentService implements ApplicationListener<UserUpdateLevelEve
     @Transactional
     public ClaimRewardResponse claimReward(ClaimRewardRequest request) {
         User user = userService.getUserById(request.userId());
-        Participant participant = participantRepository.findFirstByUserAndRewardClaimedFalseAndTournamentIsActiveFalse(user).orElseThrow(NoRewardAvailableException::new);
+        Participant participant = participantRepository.findParticipantWithReward(user)
+                .orElseThrow(NoRewardAvailableException::new);
 
         int rank = tournamentGroupService.getRankingOfUser(participant.getGroup(), user);
         User updatedUser = processReward(user, rank);
@@ -129,6 +130,7 @@ public class TournamentService implements ApplicationListener<UserUpdateLevelEve
                 .build();
 
         tournamentRepository.save(tournament);
+        countryScoreService.initialiseCountryScores(tournament);
     }
 
     @Transactional
@@ -144,7 +146,7 @@ public class TournamentService implements ApplicationListener<UserUpdateLevelEve
     private void validateUserEligibleForTournament(User user, Tournament tournament) {
         participantRepository.findByUserAndTournament(user, tournament).ifPresent(participant->{throw new UserAlreadyInTournamentException();});
 
-        if (participantRepository.existsByUserAndRewardClaimedFalse(user)) {
+        if (participantRepository.existsUserWithUnclaimedReward(user)) {
            throw new UserHasUnclaimedRewardException();
         }
     }

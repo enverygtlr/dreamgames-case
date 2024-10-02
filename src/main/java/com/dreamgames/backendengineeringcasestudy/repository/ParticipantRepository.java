@@ -10,12 +10,21 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ParticipantRepository extends JpaRepository<Participant, Integer> {
-    public Optional<Participant> findByUserAndTournament(User user, Tournament tournament);
+    Optional<Participant> findByUserAndTournament(User user, Tournament tournament);
 
-    public boolean existsByUserAndRewardClaimedFalse(User user);
+    default boolean existsUserWithUnclaimedReward(User user) {
+        return existsByUserAndRewardClaimedFalseAndGroupReadyTrue(user);
+    };
 
-    public List<Participant> findByGroup(TournamentGroup group);
+    boolean existsByUserAndRewardClaimedFalseAndGroupReadyTrue(User user);
 
-    Optional<Participant> findFirstByUserAndRewardClaimedFalseAndTournamentIsActiveFalse(User user);
+    List<Participant> findByGroup(TournamentGroup group);
+
+    Optional<Participant> findFirstByUserAndRewardClaimedFalseAndTournamentIsActiveFalseAndGroupReadyTrue(User user);
+
+    default Optional<Participant> findParticipantWithReward(User user) {
+        return findFirstByUserAndRewardClaimedFalseAndTournamentIsActiveFalseAndGroupReadyTrue(user);
+    };
+
 }
 

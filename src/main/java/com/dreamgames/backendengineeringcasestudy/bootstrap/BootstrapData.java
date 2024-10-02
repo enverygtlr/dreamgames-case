@@ -32,7 +32,7 @@ public class BootstrapData implements CommandLineRunner {
         countryScoreRepository.deleteAll();
         tournamentGroupRepository.deleteAll();
 
-        loadData();
+//        loadData();
     }
 
     private void loadData() {

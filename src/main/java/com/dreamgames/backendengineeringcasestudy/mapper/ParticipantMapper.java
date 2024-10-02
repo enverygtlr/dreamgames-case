@@ -12,6 +12,7 @@ import java.util.List;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface ParticipantMapper {
 
+    @Mapping(target = "userId", expression= "java(participant.getUser().getId().toString())")
     @Mapping(target = "username", source = "participant.user.username")
     @Mapping(target = "country", expression = "java(participant.getUser().getCountry().name())")  // Use custom expression
     GroupRankDTO toGroupRankDTO(Participant participant, int rank);

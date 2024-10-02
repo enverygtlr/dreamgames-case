@@ -2,7 +2,6 @@ package com.dreamgames.backendengineeringcasestudy.service;
 
 import com.dreamgames.backendengineeringcasestudy.domain.dto.CountryScoreRank;
 import com.dreamgames.backendengineeringcasestudy.domain.dto.GroupRankDTO;
-import com.dreamgames.backendengineeringcasestudy.domain.dto.ParticipantRank;
 import com.dreamgames.backendengineeringcasestudy.domain.entity.Participant;
 import com.dreamgames.backendengineeringcasestudy.domain.entity.Tournament;
 import com.dreamgames.backendengineeringcasestudy.domain.entity.TournamentGroup;
@@ -32,15 +31,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
-import org.junit.jupiter.api.Assertions;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.awaitility.Awaitility.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -107,7 +103,7 @@ public class TournamentServiceTest {
         when(userService.getUserById(userId)).thenReturn(user);
         when(tournamentRepository.findFirstByIsActiveTrue()).thenReturn(Optional.of(tournament));
         when(participantRepository.findByUserAndTournament(user, tournament)).thenReturn(Optional.empty());
-        when(participantRepository.existsByUserAndRewardClaimedFalse(user)).thenReturn(false);
+        when(participantRepository.existsUserWithUnclaimedReward(user)).thenReturn(false);
         when(tournamentGroupService.assignUserToTournamentGroup(tournament, user)).thenReturn(Mockito.mock(TournamentGroup.class));
         when(tournamentGroupService.getRankings(any())).thenReturn(groupRanking);
 
@@ -150,7 +146,7 @@ public class TournamentServiceTest {
 
         when(userService.getUserById(userId)).thenReturn(user);
         when(tournamentRepository.findFirstByIsActiveTrue()).thenReturn(Optional.of(tournament));
-        when(participantRepository.existsByUserAndRewardClaimedFalse(user)).thenReturn(true);
+        when(participantRepository.existsUserWithUnclaimedReward(user)).thenReturn(true);
         when(participantRepository.findByUserAndTournament(user, tournament)).thenReturn(Optional.empty());
 
         // When - Then
@@ -158,7 +154,7 @@ public class TournamentServiceTest {
 
         verify(userService, times(1)).getUserById(userId);
         verify(tournamentRepository, times(1)).findFirstByIsActiveTrue();
-        verify(participantRepository, times(1)).existsByUserAndRewardClaimedFalse(user);
+        verify(participantRepository, times(1)).existsUserWithUnclaimedReward(user);
         verify(participantRepository, times(1)).findByUserAndTournament(user, tournament);
     }
 
@@ -179,14 +175,14 @@ public class TournamentServiceTest {
         when(userService.getUserById(userId)).thenReturn(userWithMissingLevel);
         when(tournamentRepository.findFirstByIsActiveTrue()).thenReturn(Optional.of(tournament));
         when(participantRepository.findByUserAndTournament(userWithMissingLevel, tournament)).thenReturn(Optional.empty());
-        when(participantRepository.existsByUserAndRewardClaimedFalse(userWithMissingLevel)).thenReturn(false);
+        when(participantRepository.existsUserWithUnclaimedReward(userWithMissingLevel)).thenReturn(false);
 
         // When - Then
         assertThrows(MissingRequirementException.class, () -> tournamentService.enterTournament(request));
 
         verify(userService, times(1)).getUserById(userId);
         verify(tournamentRepository, times(1)).findFirstByIsActiveTrue();
-        verify(participantRepository, times(1)).existsByUserAndRewardClaimedFalse(userWithMissingLevel);
+        verify(participantRepository, times(1)).existsUserWithUnclaimedReward(userWithMissingLevel);
         verify(participantRepository, times(1)).findByUserAndTournament(userWithMissingLevel, tournament);
 
 
@@ -207,14 +203,14 @@ public class TournamentServiceTest {
         when(userService.getUserById(userId)).thenReturn(userWithMissingCoins);
         when(tournamentRepository.findFirstByIsActiveTrue()).thenReturn(Optional.of(tournament));
         when(participantRepository.findByUserAndTournament(userWithMissingCoins, tournament)).thenReturn(Optional.empty());
-        when(participantRepository.existsByUserAndRewardClaimedFalse(userWithMissingCoins)).thenReturn(false);
+        when(participantRepository.existsUserWithUnclaimedReward(userWithMissingCoins)).thenReturn(false);
 
         // When - Then
         assertThrows(MissingRequirementException.class, () -> tournamentService.enterTournament(request));
 
         verify(userService, times(1)).getUserById(userId);
         verify(tournamentRepository, times(1)).findFirstByIsActiveTrue();
-        verify(participantRepository, times(1)).existsByUserAndRewardClaimedFalse(userWithMissingCoins);
+        verify(participantRepository, times(1)).existsUserWithUnclaimedReward(userWithMissingCoins);
         verify(participantRepository, times(1)).findByUserAndTournament(userWithMissingCoins, tournament);
     }
 
@@ -372,7 +368,7 @@ public class TournamentServiceTest {
                 .build();
 
         when(userService.getUserById(userId)).thenReturn(user);
-        when(participantRepository.findFirstByUserAndRewardClaimedFalseAndTournamentIsActiveFalse(user)).thenReturn(Optional.of(participant));
+        when(participantRepository.findParticipantWithReward(user)).thenReturn(Optional.of(participant));
         when(tournamentGroupService.getRankingOfUser(any(), eq(user))).thenReturn(rank);
         when(userMapper.convertToClaimRewardResponse(user)).thenReturn(expected);
 
@@ -383,7 +379,7 @@ public class TournamentServiceTest {
         assertEquals(actual, expected);
 
         verify(userService, times(1)).getUserById(userId);
-        verify(participantRepository, times(1)).findFirstByUserAndRewardClaimedFalseAndTournamentIsActiveFalse(user);
+        verify(participantRepository, times(1)).findParticipantWithReward(user);
         verify(tournamentGroupService, times(1)).getRankingOfUser(any(), eq(user));
         verify(tournamentGroupService, times(1)).getRankingOfUser(any(), eq(user));
         verify(participant, times(1)).setRewardClaimed(true);
@@ -430,7 +426,7 @@ public class TournamentServiceTest {
                 .build();
 
         when(userService.getUserById(userId)).thenReturn(user);
-        when(participantRepository.findFirstByUserAndRewardClaimedFalseAndTournamentIsActiveFalse(user)).thenReturn(Optional.of(participant));
+        when(participantRepository.findParticipantWithReward(user)).thenReturn(Optional.of(participant));
         when(tournamentGroupService.getRankingOfUser(any(), eq(user))).thenReturn(rank);
         when(userMapper.convertToClaimRewardResponse(any(User.class))).thenReturn(expected);
         lenient().when(userRepository.save(user)).thenReturn(updatedUser);
@@ -442,7 +438,7 @@ public class TournamentServiceTest {
         assertEquals(actual, expected);
 
         verify(userService, times(1)).getUserById(userId);
-        verify(participantRepository, times(1)).findFirstByUserAndRewardClaimedFalseAndTournamentIsActiveFalse(user);
+        verify(participantRepository, times(1)).findParticipantWithReward(user);
         verify(tournamentGroupService, times(1)).getRankingOfUser(any(), eq(user));
         verify(tournamentGroupService, times(1)).getRankingOfUser(any(), eq(user));
         verify(participant, times(1)).setRewardClaimed(true);
@@ -457,13 +453,13 @@ public class TournamentServiceTest {
         var request = Mockito.mock(ClaimRewardRequest.class);
 
         when(userService.getUserById(any())).thenReturn(user);
-        when(participantRepository.findFirstByUserAndRewardClaimedFalseAndTournamentIsActiveFalse(user)).thenReturn(Optional.empty());
+        when(participantRepository.findParticipantWithReward(user)).thenReturn(Optional.empty());
 
         // When - Then
         assertThrows(NoRewardAvailableException.class, () -> tournamentService.claimReward(request));
 
         verify(userService, times(1)).getUserById(any());
-        verify(participantRepository, times(1)).findFirstByUserAndRewardClaimedFalseAndTournamentIsActiveFalse(user);
+        verify(participantRepository, times(1)).findParticipantWithReward(user);
     }
 
 

@@ -7,6 +7,7 @@ import com.dreamgames.backendengineeringcasestudy.domain.response.EnterTournamen
 import com.dreamgames.backendengineeringcasestudy.domain.response.GroupLeaderboardResponse;
 import com.dreamgames.backendengineeringcasestudy.service.TournamentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,5 +38,18 @@ public class TournamentController {
     public ResponseEntity<CountryLeaderboardResponse> getCountryLeaderboard(@RequestBody CountryLeaderboardRequest request) {
        return ResponseEntity.ok(tournamentService.getCountryLeaderboard(request));
     }
+
+    @PostMapping("/start-tournament")
+    public ResponseEntity startTounament() {
+        tournamentService.startTournament();
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping("/end-tournament")
+    public ResponseEntity endTournament() {
+        tournamentService.endTournament();
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 
 }

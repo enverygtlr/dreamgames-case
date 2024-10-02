@@ -7,10 +7,12 @@ import com.dreamgames.backendengineeringcasestudy.domain.entity.Tournament;
 import com.dreamgames.backendengineeringcasestudy.domain.enums.Country;
 import com.dreamgames.backendengineeringcasestudy.exception.TournamentNotFoundException;
 import com.dreamgames.backendengineeringcasestudy.repository.CountryScoreRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -18,6 +20,19 @@ import java.util.List;
 public class CountryScoreService {
     private final CountryScoreRepository countryScoreRepository;
 
+    @Transactional
+    public void initialiseCountryScores(Tournament tournament) {
+        Arrays.stream(Country.values()).forEach(country -> {
+            CountryScore countryScore = CountryScore.builder()
+                    .totalScore(0)
+                    .tournament(tournament)
+                    .country(country)
+                    .build();
+            countryScoreRepository.save(countryScore);
+        });
+    }
+
+    @Transactional
     public void addCountryScore(Tournament tournament, Country country, int score) {
         var countryScore = countryScoreRepository.findCountryScoreByCountryAndTournament(country, tournament).orElseThrow(RuntimeException::new);
         countryScore.setTotalScore(countryScore.getTotalScore() + score);
