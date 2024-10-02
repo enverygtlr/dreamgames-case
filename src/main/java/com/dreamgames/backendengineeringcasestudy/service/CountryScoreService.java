@@ -24,7 +24,7 @@ public class CountryScoreService {
         countryScoreRepository.save(countryScore);
     }
 
-    List<CountryScoreRank> getCountryScoreLeaderboard(Tournament tournament) {
+    public List<CountryScoreRank> getCountryScoreLeaderboard(Tournament tournament) {
         var countryScores = countryScoreRepository.findCountryScoreByTournament(tournament);
         return getCountryScoreRanks(countryScores);
     }
@@ -37,7 +37,7 @@ public class CountryScoreService {
         List<CountryScoreRank> countryScoreRanks = new ArrayList<>();
         int rank = 1;
         for (int i = 0; i < sortedCountryScores.size(); i++) {
-            if (i > 0 && sortedCountryScores.get(i).getTotalScore() != sortedCountryScores.get(i - 1).getTotalScore()) {
+            if (i > 0 && !sortedCountryScores.get(i).getTotalScore().equals(sortedCountryScores.get(i - 1).getTotalScore())) {
                 rank = rank + 1;
             }
             countryScoreRanks.add(new CountryScoreRank(rank, sortedCountryScores.get(i).getTotalScore(), sortedCountryScores.get(i).getCountry()));

@@ -69,7 +69,7 @@ public class TournamentGroupService {
         List<ParticipantRank> participantRanks = new ArrayList<>();
         int rank = 1;
         for (int i = 0; i < sortedParticipants.size(); i++) {
-            if (i > 0 && sortedParticipants.get(i).getScore() != sortedParticipants.get(i - 1).getScore()) {
+            if (i > 0 && !sortedParticipants.get(i).getScore().equals(sortedParticipants.get(i - 1).getScore())) {
                 rank = rank + 1;
             }
             participantRanks.add(new ParticipantRank(rank, sortedParticipants.get(i)));

@@ -4,8 +4,10 @@ import com.dreamgames.backendengineeringcasestudy.domain.entity.User;
 import com.dreamgames.backendengineeringcasestudy.domain.enums.Country;
 import com.dreamgames.backendengineeringcasestudy.domain.request.UserSaveRequest;
 import com.dreamgames.backendengineeringcasestudy.domain.request.UserUpdateLevelRequest;
+import com.dreamgames.backendengineeringcasestudy.domain.response.UserResponse;
 import com.dreamgames.backendengineeringcasestudy.domain.response.UserUpdateLevelResponse;
 import com.dreamgames.backendengineeringcasestudy.exception.UserDuplicateException;
+import com.dreamgames.backendengineeringcasestudy.exception.UserNotExistException;
 import com.dreamgames.backendengineeringcasestudy.mapper.UserMapper;
 import com.dreamgames.backendengineeringcasestudy.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,6 +46,37 @@ class UserServiceTest {
 
     @Test
     void save_shouldSuccess() {
+        // Given
+        var userId = UUID.randomUUID();
+        var username = "ahmet";
+        var request = new UserSaveRequest(username);
+
+        var user = User.builder()
+                .id(userId)
+                .country(Country.US)
+                .username(username)
+                .build();
+
+        var expected = UserResponse.builder()
+                .id(user.getId().toString())
+                .username(username)
+                .country(user.getCountry().name())
+                .level(user.getLevel())
+                .coin(user.getCoin())
+                .build();
+
+        when(userRepository.save(any(User.class))).thenReturn(user);
+        when(userMapper.convertToUserResponse(user)).thenReturn(expected);
+
+        //Where
+        var actual = userService.save(request);
+
+        //Then
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void save_shouldThrowWhenUserAlreadyExists() {
         UserSaveRequest request = new UserSaveRequest("duplicateUser");
 
         when(userRepository.existsByUsername("duplicateUser")).thenReturn(true);
@@ -90,5 +123,17 @@ class UserServiceTest {
         verify(userRepository, times(1)).findById(user.getId());
         verify(userRepository, times(1)).save(user);
         verify(userMapper, times(1)).convertToUserUpdateLevelResponse(updatedUser);
+    }
+
+    @Test
+    void update_shouldThrowWhenUserDoesNotExist() {
+        // Given
+       var userId = UUID.randomUUID();
+       var request = new UserUpdateLevelRequest(userId);
+       
+       when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+       //When - Then
+        assertThrows(UserNotExistException.class, () -> userService.update(request));
     }
 }
