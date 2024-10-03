@@ -110,9 +110,7 @@ public class TournamentGroupService {
     }
 
     private List<GroupRankDTO> convertToGroupRankDTOs(List<ParticipantRank> participantRanks) {
-            return participantRanks.stream().map(rank -> {
-                        return participantMapper.toGroupRankDTO(rank.participant(), rank.rank());
-                    })
+            return participantRanks.stream().map(rank -> participantMapper.toGroupRankDTO(rank.participant(), rank.rank()))
             .collect(Collectors.toList());
     }
 

@@ -382,7 +382,7 @@ public class TournamentServiceTest {
         verify(participantRepository, times(1)).findParticipantWithReward(user);
         verify(tournamentGroupService, times(1)).getRankingOfUser(any(), eq(user));
         verify(tournamentGroupService, times(1)).getRankingOfUser(any(), eq(user));
-        verify(participant, times(1)).setHasReward(true);
+        verify(participant, times(1)).setHasReward(false);
         verify(participantRepository, times(1)).save(any());
         verify(userMapper, times(1)).convertToClaimRewardResponse(user);
     }
@@ -441,7 +441,7 @@ public class TournamentServiceTest {
         verify(participantRepository, times(1)).findParticipantWithReward(user);
         verify(tournamentGroupService, times(1)).getRankingOfUser(any(), eq(user));
         verify(tournamentGroupService, times(1)).getRankingOfUser(any(), eq(user));
-        verify(participant, times(1)).setHasReward(true);
+        verify(participant, times(1)).setHasReward(false);
         verify(participantRepository, times(1)).save(any());
         verify(userMapper, times(1)).convertToClaimRewardResponse(any(User.class));
     }

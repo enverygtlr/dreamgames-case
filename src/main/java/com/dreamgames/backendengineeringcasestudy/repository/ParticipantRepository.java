@@ -14,7 +14,7 @@ public interface ParticipantRepository extends JpaRepository<Participant, Intege
 
     default boolean existsUserWithUnclaimedReward(User user) {
         return existsByUserAndHasRewardTrue(user);
-    };
+    }
 
     boolean existsByUserAndHasRewardTrue(User user);
 

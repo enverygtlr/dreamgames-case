@@ -56,7 +56,7 @@ public class TournamentGroupServiceTest {
                 .coin(100)
                 .build();
 
-        List<Participant> mockParticipants = Mockito.mock(List.class); // Mock the list of participants
+        List<Participant> mockParticipants = Mockito.mock(List.class); // Mock the list of participant
         when(mockParticipants.size()).thenReturn(5);
 
         when(tournamentGroupRepository.findAvailableGroup(user.getCountry(), tournament)).thenReturn(Optional.of(group));
