@@ -38,6 +38,6 @@ public class Participant {
     private TournamentGroup group;
 
     @NotNull
-    @Column(name = "reward_claimed", nullable = false)
-    private Boolean rewardClaimed;
+    @Column(name = "has_reward", nullable = false)
+    private Boolean hasReward;
 }

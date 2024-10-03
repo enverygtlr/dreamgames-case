@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS participant (
     country VARCHAR(50) NOT NULL,
     tournament_id VARCHAR(36) NOT NULL,
     group_id VARCHAR(36) NOT NULL,
-    reward_claimed BOOLEAN NOT NULL,
+    has_reward BOOLEAN NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
     FOREIGN KEY (tournament_id) REFERENCES tournament(id) ON DELETE CASCADE,
     FOREIGN KEY (group_id) REFERENCES tournament_group(id) ON DELETE CASCADE

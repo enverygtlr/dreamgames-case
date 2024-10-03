@@ -26,11 +26,11 @@ public class BootstrapData implements CommandLineRunner {
     private final CountryScoreRepository countryScoreRepository;
 
     public void run(String... args) throws Exception {
-        userRepository.deleteAll();
-        tournamentRepository.deleteAll();
-        participantRepository.deleteAll();
-        countryScoreRepository.deleteAll();
-        tournamentGroupRepository.deleteAll();
+//        userRepository.deleteAll();
+//        tournamentRepository.deleteAll();
+//        participantRepository.deleteAll();
+//        countryScoreRepository.deleteAll();
+//        tournamentGroupRepository.deleteAll();
 
 //        loadData();
     }
@@ -132,7 +132,7 @@ public class BootstrapData implements CommandLineRunner {
                 .group(group1)
                 .tournament(tournament1)
                 .score(0)
-                .rewardClaimed(false)
+                .hasReward(false)
                 .build();
 
         Participant participant2 = Participant.builder()
@@ -141,7 +141,7 @@ public class BootstrapData implements CommandLineRunner {
                 .group(group1)
                 .tournament(tournament1)
                 .score(0)
-                .rewardClaimed(false)
+                .hasReward(false)
                 .build();
 
         Participant participant3 = Participant.builder()
@@ -150,7 +150,7 @@ public class BootstrapData implements CommandLineRunner {
                 .group(group1)
                 .tournament(tournament1)
                 .score(0)
-                .rewardClaimed(false)
+                .hasReward(false)
                 .build();
 
         Participant participant4 = Participant.builder()
@@ -159,7 +159,7 @@ public class BootstrapData implements CommandLineRunner {
                 .group(group1)
                 .tournament(tournament1)
                 .score(0)
-                .rewardClaimed(false)
+                .hasReward(false)
                 .build();
 
         Participant participant5 = Participant.builder()
@@ -168,7 +168,7 @@ public class BootstrapData implements CommandLineRunner {
                 .group(group1)
                 .tournament(tournament1)
                 .score(0)
-                .rewardClaimed(false)
+                .hasReward(false)
                 .build();
 
         Participant participant6 = Participant.builder()
@@ -177,7 +177,7 @@ public class BootstrapData implements CommandLineRunner {
                 .group(group2)
                 .tournament(tournament1)
                 .score(0)
-                .rewardClaimed(false)
+                .hasReward(false)
                 .build();
 
 
@@ -186,7 +186,7 @@ public class BootstrapData implements CommandLineRunner {
                 .group(group3)
                 .tournament(tournament1)
                 .score(0)
-                .rewardClaimed(false)
+                .hasReward(false)
                 .country(user7.getCountry())
                 .build();
 

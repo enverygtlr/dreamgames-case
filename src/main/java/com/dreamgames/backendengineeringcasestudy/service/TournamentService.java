@@ -95,7 +95,7 @@ public class TournamentService implements ApplicationListener<UserUpdateLevelEve
 
         int rank = tournamentGroupService.getRankingOfUser(participant.getGroup(), user);
         User updatedUser = processReward(user, rank);
-        participant.setRewardClaimed(true);
+        participant.setHasReward(false);
         participantRepository.save(participant);
         return userMapper.convertToClaimRewardResponse(updatedUser);
     }
@@ -139,9 +139,13 @@ public class TournamentService implements ApplicationListener<UserUpdateLevelEve
         tournamentRepository.findFirstByIsActiveTrue().ifPresent(tournament -> {
             tournament.setIsActive(false);
             tournamentRepository.save(tournament);
+            dispatchRewards(tournament);
         });
     }
 
+    private void dispatchRewards(Tournament tournament) {
+        tournamentGroupService.dispatchTournamentRewards(tournament);
+    }
 
     private void validateUserEligibleForTournament(User user, Tournament tournament) {
         participantRepository.findByUserAndTournament(user, tournament).ifPresent(participant->{throw new UserAlreadyInTournamentException();});

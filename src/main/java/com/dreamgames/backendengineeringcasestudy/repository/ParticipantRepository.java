@@ -13,17 +13,17 @@ public interface ParticipantRepository extends JpaRepository<Participant, Intege
     Optional<Participant> findByUserAndTournament(User user, Tournament tournament);
 
     default boolean existsUserWithUnclaimedReward(User user) {
-        return existsByUserAndRewardClaimedFalseAndGroupReadyTrue(user);
+        return existsByUserAndHasRewardTrue(user);
     };
 
-    boolean existsByUserAndRewardClaimedFalseAndGroupReadyTrue(User user);
+    boolean existsByUserAndHasRewardTrue(User user);
 
     List<Participant> findByGroup(TournamentGroup group);
 
-    Optional<Participant> findFirstByUserAndRewardClaimedFalseAndTournamentIsActiveFalseAndGroupReadyTrue(User user);
+    Optional<Participant> findFirstByUserAndHasRewardTrue(User user);
 
     default Optional<Participant> findParticipantWithReward(User user) {
-        return findFirstByUserAndRewardClaimedFalseAndTournamentIsActiveFalseAndGroupReadyTrue(user);
+        return findFirstByUserAndHasRewardTrue(user);
     };
 
 }

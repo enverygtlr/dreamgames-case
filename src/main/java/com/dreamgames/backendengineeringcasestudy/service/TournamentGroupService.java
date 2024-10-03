@@ -59,6 +59,19 @@ public class TournamentGroupService {
                 .map(Participant::getGroup);
     }
 
+    @Transactional
+    public void dispatchTournamentRewards(Tournament tournament) {
+        tournamentGroupRepository.findAllByTournament(tournament).forEach(group ->
+                getParticipantRanks(group).stream()
+                        .filter(participantRank -> participantRank.rank() == 1 || participantRank.rank() == 2)
+                        .map(ParticipantRank::participant)
+                        .forEach(participant -> {
+                            participant.setHasReward(true);
+                            participantRepository.save(participant);
+                        })
+        );
+    }
+
     private List<ParticipantRank> getParticipantRanks(TournamentGroup group) {
         var participants = participantRepository.findByGroup(group);
 
@@ -92,7 +105,7 @@ public class TournamentGroupService {
                 .country(user.getCountry())
                 .group(group)
                 .tournament(tournament)
-                .rewardClaimed(false)
+                .hasReward(false)
                 .build();
     }
 

@@ -24,4 +24,6 @@ public interface TournamentGroupRepository extends JpaRepository<TournamentGroup
         return findAvailableGroups(country, tournament).stream().findFirst();
     }
 
+    List<TournamentGroup> findAllByTournament(Tournament tournament);
+
 }
