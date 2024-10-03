@@ -11,6 +11,8 @@ services:
       - '8080:8080'
     networks:
       - 'local-network'
+    depends_on:
+      - mysqldb
 
   mysqldb:
     image: mysql:8.0.28-oracle
@@ -28,6 +30,8 @@ services:
     volumes:
       - case-mysql-data:/var/lib/case-mysqldb
       - ./mysql-db-dump.sql:/docker-entrypoint-initdb.d/mysql-db-dump.sql:ro
+
+
 
 volumes:
   case-mysql-data:
