@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 public enum ErrorMessage implements BaseErrorMessage {
+    INVALID_LEVEL("New level value is less or equal to current level.", "Invalid new level value."),
     NO_REWARD_AVAILABLE("No Reward Available", "Tournament Reward Exception."),
     DUPLICATE_USER("User with given username already exists.", "Existing Username"),
     INVALID_USER("User with given id does not exist.", "Invalid User"),

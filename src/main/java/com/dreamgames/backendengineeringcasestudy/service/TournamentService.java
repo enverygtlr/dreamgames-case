@@ -160,12 +160,12 @@ public class TournamentService implements ApplicationListener<UserUpdateLevelEve
         countryScoreService.addCountryScore(tournament,country,1);
     }
 
-    private void updateParticipantScore(User user) {
+    private void updateParticipantScore(User user, int score) {
         tournamentRepository.findFirstByIsActiveTrue()
                 .flatMap(activeTournament -> participantRepository.findByUserAndTournament(user, activeTournament))
                 .filter(participant -> participant.getGroup().getReady())
                 .ifPresent(participant -> {
-                    participant.setScore(participant.getScore() + 1);
+                    participant.setScore(participant.getScore() + score);
                     participantRepository.save(participant);
                     updateCountryScore(participant.getTournament(), participant.getCountry());
                 });
@@ -174,6 +174,6 @@ public class TournamentService implements ApplicationListener<UserUpdateLevelEve
     @Transactional
     @Override
     public void onApplicationEvent(UserUpdateLevelEvent event) {
-        updateParticipantScore(event.getUser());
+        updateParticipantScore(event.getUser(), event.getScore());
     }
 }

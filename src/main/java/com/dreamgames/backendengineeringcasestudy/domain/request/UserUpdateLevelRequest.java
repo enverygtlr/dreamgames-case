@@ -5,7 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import java.util.UUID;
 
 public record UserUpdateLevelRequest (
-        @NotBlank UUID id
+        @NotBlank UUID id,
+        int newLevel
 ) {
 }
 

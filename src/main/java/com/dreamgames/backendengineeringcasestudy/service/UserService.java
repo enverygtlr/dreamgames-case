@@ -7,6 +7,7 @@ import com.dreamgames.backendengineeringcasestudy.domain.request.UserUpdateLevel
 import com.dreamgames.backendengineeringcasestudy.domain.response.UserResponse;
 import com.dreamgames.backendengineeringcasestudy.domain.response.UserUpdateLevelResponse;
 import com.dreamgames.backendengineeringcasestudy.event.UserUpdateLevelEvent;
+import com.dreamgames.backendengineeringcasestudy.exception.InvalidLevelValueException;
 import com.dreamgames.backendengineeringcasestudy.exception.UserDuplicateException;
 import com.dreamgames.backendengineeringcasestudy.exception.UserNotExistException;
 import com.dreamgames.backendengineeringcasestudy.mapper.UserMapper;
@@ -39,10 +40,11 @@ public class UserService {
     @Transactional
     public UserUpdateLevelResponse update(UserUpdateLevelRequest request) {
         User user = userRepository.findById(request.id()).orElseThrow(UserNotExistException::new);
-        user.setLevel(user.getLevel() + 1);
-        user.setCoin(user.getCoin() + 25);
+        int levelDiff = getLevelDifference(request, user);
+        user.setLevel(user.getLevel() + levelDiff);
+        user.setCoin(user.getCoin() + (25 * levelDiff));
         User updatedUser = userRepository.save(user);
-        applicationEventPublisher.publishEvent(new UserUpdateLevelEvent(this, updatedUser));
+        applicationEventPublisher.publishEvent(new UserUpdateLevelEvent(this, updatedUser, levelDiff));
         return userMapper.convertToUserUpdateLevelResponse(updatedUser);
     }
 
@@ -63,5 +65,11 @@ public class UserService {
        if(userRepository.existsByUsername(request.username())) {
            throw new UserDuplicateException();
        }
+    }
+
+    private int getLevelDifference(UserUpdateLevelRequest request, User user) {
+        if (request.newLevel() != 0 && user.getLevel() >= request.newLevel()) throw new InvalidLevelValueException();
+        else if (request.newLevel() == 0) return 1;
+        else return request.newLevel() - user.getLevel();
     }
 }

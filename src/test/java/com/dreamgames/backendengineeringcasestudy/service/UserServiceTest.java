@@ -89,7 +89,8 @@ class UserServiceTest {
     @Test
     void update_shouldSuccess() {
         // Given
-        UserUpdateLevelRequest request = new UserUpdateLevelRequest(UUID.randomUUID());
+        int newLevel = 30;
+        UserUpdateLevelRequest request = new UserUpdateLevelRequest(UUID.randomUUID(), newLevel);
         User user = User.builder()
                 .id(request.id())
                 .country(Country.TR)
@@ -102,8 +103,8 @@ class UserServiceTest {
                 .id(user.getId())
                 .country(user.getCountry())
                 .username(user.getUsername())
-                .level(6)
-                .coin(125)
+                .level(5 + newLevel)
+                .coin(100 + (25 * newLevel))
                 .build();
 
         UserUpdateLevelResponse response = new UserUpdateLevelResponse(updatedUser.getId().toString(),"testUser", updatedUser.getCountry().name(), updatedUser.getLevel(), updatedUser.getCoin());
@@ -117,8 +118,8 @@ class UserServiceTest {
 
         // Then
         assertNotNull(result);
-        assertEquals(6, result.level());
-        assertEquals(125, result.coin());
+        assertEquals(updatedUser.getLevel(), result.level());
+        assertEquals(updatedUser.getCoin(), result.coin());
 
         verify(userRepository, times(1)).findById(user.getId());
         verify(userRepository, times(1)).save(user);
@@ -129,8 +130,8 @@ class UserServiceTest {
     void update_shouldThrowWhenUserDoesNotExist() {
         // Given
        var userId = UUID.randomUUID();
-       var request = new UserUpdateLevelRequest(userId);
-       
+       var request = new UserUpdateLevelRequest(userId, 0);
+
        when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
        //When - Then
