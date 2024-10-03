@@ -1,12 +1,10 @@
 package com.dreamgames.backendengineeringcasestudy.mapper;
 
 import com.dreamgames.backendengineeringcasestudy.domain.entity.User;
-import com.dreamgames.backendengineeringcasestudy.domain.request.UserSaveRequest;
 import com.dreamgames.backendengineeringcasestudy.domain.response.ClaimRewardResponse;
 import com.dreamgames.backendengineeringcasestudy.domain.response.UserResponse;
 import com.dreamgames.backendengineeringcasestudy.domain.response.UserUpdateLevelResponse;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")

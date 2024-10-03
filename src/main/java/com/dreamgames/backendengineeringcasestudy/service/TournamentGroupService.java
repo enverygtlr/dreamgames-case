@@ -61,7 +61,7 @@ public class TournamentGroupService {
 
     @Transactional
     public void dispatchTournamentRewards(Tournament tournament) {
-        tournamentGroupRepository.findAllByTournament(tournament).forEach(group ->
+        tournamentGroupRepository.findAllByTournamentAndReadyTrue(tournament).forEach(group ->
                 getParticipantRanks(group).stream()
                         .filter(participantRank -> participantRank.rank() == 1 || participantRank.rank() == 2)
                         .map(ParticipantRank::participant)

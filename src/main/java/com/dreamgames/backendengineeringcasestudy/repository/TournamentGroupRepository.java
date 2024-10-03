@@ -2,14 +2,12 @@ package com.dreamgames.backendengineeringcasestudy.repository;
 
 import com.dreamgames.backendengineeringcasestudy.domain.entity.Tournament;
 import com.dreamgames.backendengineeringcasestudy.domain.entity.TournamentGroup;
-import com.dreamgames.backendengineeringcasestudy.domain.entity.User;
 import com.dreamgames.backendengineeringcasestudy.domain.enums.Country;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public interface TournamentGroupRepository extends JpaRepository<TournamentGroup, Integer> {
 
@@ -24,6 +22,6 @@ public interface TournamentGroupRepository extends JpaRepository<TournamentGroup
         return findAvailableGroups(country, tournament).stream().findFirst();
     }
 
-    List<TournamentGroup> findAllByTournament(Tournament tournament);
+    List<TournamentGroup> findAllByTournamentAndReadyTrue(Tournament tournament);
 
 }

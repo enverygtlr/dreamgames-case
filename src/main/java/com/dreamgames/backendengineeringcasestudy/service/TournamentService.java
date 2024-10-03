@@ -1,5 +1,6 @@
 package com.dreamgames.backendengineeringcasestudy.service;
 
+import com.dreamgames.backendengineeringcasestudy.constants.ApplicationConstants;
 import com.dreamgames.backendengineeringcasestudy.domain.dto.GroupRankDTO;
 import com.dreamgames.backendengineeringcasestudy.domain.entity.Participant;
 import com.dreamgames.backendengineeringcasestudy.domain.entity.Tournament;
@@ -46,7 +47,7 @@ public class TournamentService implements ApplicationListener<UserUpdateLevelEve
         Tournament activeTournament = tournamentRepository.findFirstByIsActiveTrue().orElseThrow(TournamentNotFoundException::new);
         validateUserEligibleForTournament(user, activeTournament);
         validateUserRequirements(user);
-
+        processTournamentEnter(user);
         var tournamentGroup = tournamentGroupService.assignUserToTournamentGroup(activeTournament, user);
         List<GroupRankDTO> groupRankings = tournamentGroupService.getRankings(tournamentGroup);
 
@@ -100,19 +101,24 @@ public class TournamentService implements ApplicationListener<UserUpdateLevelEve
         return userMapper.convertToClaimRewardResponse(updatedUser);
     }
 
+    private void processTournamentEnter(User user) {
+        user.setCoin(user.getCoin() - ApplicationConstants.TOURNAMENT_FEE);
+        userRepository.save(user);
+    }
+
     private User processReward(User user, int rank) {
         if (rank == 1) {
-            user.setCoin(user.getCoin() + 10000);
+            user.setCoin(user.getCoin() + ApplicationConstants.FIRST_REWARD);
             return userRepository.save(user);
         } else if (rank == 2) {
-            user.setCoin(user.getCoin() + 5000);
+            user.setCoin(user.getCoin() + ApplicationConstants.SECOND_REWARD);
             return userRepository.save(user);
         }
         return user;
     }
 
     private void validateUserRequirements(User user) {
-        if (!(user.getCoin() >= 1000 && user.getLevel() >= 20)) {
+        if (!(user.getCoin() >= ApplicationConstants.TOURNAMENT_FEE && user.getLevel() >= ApplicationConstants.TOURNAMENT_MINLEVEL)) {
             throw new MissingRequirementException();
         }
     }
@@ -156,8 +162,8 @@ public class TournamentService implements ApplicationListener<UserUpdateLevelEve
         }
     }
 
-    private void updateCountryScore(Tournament tournament, Country country) {
-        countryScoreService.addCountryScore(tournament,country,1);
+    private void updateCountryScore(Tournament tournament, Country country, int score) {
+        countryScoreService.addCountryScore(tournament,country,score);
     }
 
     private void updateParticipantScore(User user, int score) {
@@ -167,7 +173,7 @@ public class TournamentService implements ApplicationListener<UserUpdateLevelEve
                 .ifPresent(participant -> {
                     participant.setScore(participant.getScore() + score);
                     participantRepository.save(participant);
-                    updateCountryScore(participant.getTournament(), participant.getCountry());
+                    updateCountryScore(participant.getTournament(), participant.getCountry(), score);
                 });
     }
 

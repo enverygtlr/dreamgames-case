@@ -1,5 +1,6 @@
 package com.dreamgames.backendengineeringcasestudy.service;
 
+import com.dreamgames.backendengineeringcasestudy.constants.ApplicationConstants;
 import com.dreamgames.backendengineeringcasestudy.domain.entity.User;
 import com.dreamgames.backendengineeringcasestudy.domain.enums.Country;
 import com.dreamgames.backendengineeringcasestudy.domain.request.UserSaveRequest;
@@ -27,9 +28,6 @@ public class UserService {
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    private final Integer INITIAL_LEVEL = 30;
-    private final Integer INITIAL_COIN = 5000;
-
     @Transactional
     public UserResponse save(UserSaveRequest request) {
         validateUserUniqueness(request);
@@ -42,7 +40,7 @@ public class UserService {
         User user = userRepository.findById(request.id()).orElseThrow(UserNotExistException::new);
         int levelDiff = getLevelDifference(request, user);
         user.setLevel(user.getLevel() + levelDiff);
-        user.setCoin(user.getCoin() + (25 * levelDiff));
+        user.setCoin(user.getCoin() + (ApplicationConstants.LEVEL_PRIZE * levelDiff));
         User updatedUser = userRepository.save(user);
         applicationEventPublisher.publishEvent(new UserUpdateLevelEvent(this, updatedUser, levelDiff));
         return userMapper.convertToUserUpdateLevelResponse(updatedUser);
@@ -56,8 +54,8 @@ public class UserService {
         return User.builder()
                 .username(request.username())
                 .country(Country.getRandomCountry())
-                .level(INITIAL_LEVEL)
-                .coin(INITIAL_COIN)
+                .level(ApplicationConstants.INITIAL_LEVEL)
+                .coin(ApplicationConstants.INITIAL_COIN)
                 .build();
     }
 
