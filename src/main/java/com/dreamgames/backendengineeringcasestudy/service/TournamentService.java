@@ -120,6 +120,7 @@ public class TournamentService implements ApplicationListener<UserUpdateLevelEve
     @Transactional
     @Scheduled(cron = "0 0 0 * * *", zone = "UTC")
     public void startTournament() {
+        if(tournamentRepository.existsByIsActiveTrue()) return;
         LocalDateTime startTime = LocalDateTime.now().with(LocalTime.MIDNIGHT);
         LocalDateTime endTime = startTime.withHour(20);
 

@@ -9,4 +9,5 @@ import java.util.UUID;
 
 public interface TournamentRepository extends JpaRepository<Tournament, UUID> {
     Optional<Tournament> findFirstByIsActiveTrue();
+    boolean existsByIsActiveTrue();
 }

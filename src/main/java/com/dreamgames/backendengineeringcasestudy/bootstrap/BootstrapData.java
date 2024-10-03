@@ -26,11 +26,11 @@ public class BootstrapData implements CommandLineRunner {
     private final CountryScoreRepository countryScoreRepository;
 
     public void run(String... args) throws Exception {
-//        userRepository.deleteAll();
-//        tournamentRepository.deleteAll();
-//        participantRepository.deleteAll();
-//        countryScoreRepository.deleteAll();
-//        tournamentGroupRepository.deleteAll();
+        userRepository.deleteAll();
+        tournamentRepository.deleteAll();
+        participantRepository.deleteAll();
+        countryScoreRepository.deleteAll();
+        tournamentGroupRepository.deleteAll();
 
 //        loadData();
     }
