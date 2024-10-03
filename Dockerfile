@@ -8,4 +8,4 @@ RUN mvn clean package
 FROM eclipse-temurin:17-jre
 WORKDIR /app
 COPY --from=Builder /app/target/*.jar /app/application.jar
-CMD ["java", "-jar", "application.jar"]
+CMD ["sh", "-c", "sleep 5 && java -jar application.jar"]
