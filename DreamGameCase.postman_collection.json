@@ -1,0 +1,546 @@
+{
+	"info": {
+		"_postman_id": "e6126908-5ac6-4986-80b8-9c16e11695a3",
+		"name": "DreamGameCase",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27448637"
+	},
+	"item": [
+		{
+			"name": "Scenario",
+			"item": [
+				{
+					"name": "Creat New User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"newplayer\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/user",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Level",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\":\"dda68aa2-ce63-4ee4-970f-9c8c2f225203\",\n    \"newLevel\":31\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/user/update-level",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"update-level"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enter Tournament",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"dda68aa2-ce63-4ee4-970f-9c8c2f225203\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/tournament/enter",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tournament",
+								"enter"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enter Tournament player7",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"6931a176-9558-4700-9d03-626b79f587c7\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/tournament/enter",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tournament",
+								"enter"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enter Tournament player9",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"3846b00a-324d-4d4b-8025-0268de998035\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/tournament/enter",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tournament",
+								"enter"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enter Tournament player3",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"1649acd0-eba1-48db-8eb9-7b6dfdb4f53e\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/tournament/enter",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tournament",
+								"enter"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enter Tournament - Unclaimed Reward",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"b9538a25-453f-4f38-ac9f-187422b146d2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/tournament/enter",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tournament",
+								"enter"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Claim Reward",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"b9538a25-453f-4f38-ac9f-187422b146d2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/tournament/claim-reward",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tournament",
+								"claim-reward"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enter Tournament Again",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"b9538a25-453f-4f38-ac9f-187422b146d2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/tournament/enter",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tournament",
+								"enter"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Level- player 1",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\":\"b9538a25-453f-4f38-ac9f-187422b146d2\",\n    \"newLevel\":40\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/user/update-level",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"update-level"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Level- player 3",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\":\"1649acd0-eba1-48db-8eb9-7b6dfdb4f53e\",\n    \"newLevel\":38\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/user/update-level",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"update-level"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Level- player 9",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\":\"3846b00a-324d-4d4b-8025-0268de998035\",\n    \"newLevel\":33\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/user/update-level",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"update-level"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Level- player 7",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\":\"6931a176-9558-4700-9d03-626b79f587c7\",\n    \"newLevel\":31\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/user/update-level",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"update-level"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Level- player 10",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\":\"dda68aa2-ce63-4ee4-970f-9c8c2f225203\",\n    \"newLevel\":32\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/user/update-level",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"update-level"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Group Leaderboard",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\":\"b9538a25-453f-4f38-ac9f-187422b146d2\",\n    \"tournamentId\": \"e88d92b1-78c0-470a-932c-89b139ec324c\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/tournament/group-leaderboard",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tournament",
+								"group-leaderboard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "End Tournament",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/tournament/end-tournament",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tournament",
+								"end-tournament"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Group Leaderboard Copy",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\":\"b9538a25-453f-4f38-ac9f-187422b146d2\",\n    \"tournamentId\": \"e88d92b1-78c0-470a-932c-89b139ec324c\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/tournament/group-leaderboard",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tournament",
+								"group-leaderboard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Claim Reward- player 1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"b9538a25-453f-4f38-ac9f-187422b146d2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/tournament/claim-reward",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tournament",
+								"claim-reward"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Country Leaderboard",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tournamentId\": \"e88d92b1-78c0-470a-932c-89b139ec324c\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/tournament/country-leaderboard",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tournament",
+								"country-leaderboard"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
